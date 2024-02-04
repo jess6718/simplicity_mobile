@@ -1,4 +1,4 @@
-package au.com.holberton.simplicity.mobile
+package au.com.holberton.simplicity.mobile.productlisting
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
