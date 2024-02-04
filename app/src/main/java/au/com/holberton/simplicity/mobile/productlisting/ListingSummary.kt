@@ -1,4 +1,4 @@
-package au.com.holberton.simplicity.mobile
+package au.com.holberton.simplicity.mobile.productlisting
 
 // TODO task 4.1: Fetch data for listings screen
 data class ListingSummary(

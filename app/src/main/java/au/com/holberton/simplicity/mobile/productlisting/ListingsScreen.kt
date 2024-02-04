@@ -1,4 +1,4 @@
-package au.com.holberton.simplicity.mobile
+package au.com.holberton.simplicity.mobile.productlisting
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

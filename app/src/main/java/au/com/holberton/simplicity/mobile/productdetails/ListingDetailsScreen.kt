@@ -1,4 +1,4 @@
-package au.com.holberton.simplicity.mobile
+package au.com.holberton.simplicity.mobile.productdetails
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import au.com.holberton.simplicity.mobile.productlisting.ListingDetailsRepository
+import au.com.holberton.simplicity.mobile.productlisting.ListingsRepository
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
 
 @Composable
@@ -26,7 +28,7 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, listingId: String?) {
 
     // TODO task 4.2: Fetch data for listing details screen
     listingId?.let {
-        listingDetails.value = ListingsRepository.getMockListingDetails(it)
+        listingDetails.value = ListingDetailsRepository.getMockListingDetails(it)
     }
 
     Scaffold(
