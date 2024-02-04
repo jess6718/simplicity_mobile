@@ -2,6 +2,7 @@
 
 # Gradle files
 .gradle/
+.build/
 
 # IntelliJ
 .idea
