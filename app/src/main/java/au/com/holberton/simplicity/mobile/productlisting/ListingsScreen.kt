@@ -5,17 +5,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import au.com.holberton.simplicity.mobile.R
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
 import coil.compose.AsyncImage
 
 @Composable
-fun ListingsScreen(navigate: (String) -> Unit) {
+fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
     val searchTerm = remember { mutableStateOf("") }
     val isSortedByProductCode = remember { mutableStateOf(false) }
     val listings = remember { mutableStateOf(emptyList<ListingSummary>()) }
@@ -49,7 +53,15 @@ fun ListingsScreen(navigate: (String) -> Unit) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Products Search") })
+            TopAppBar(title = { Text("Products Search") },
+            navigationIcon = {
+                IconButton(onClick = onBackPressed) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            })
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
@@ -190,6 +202,6 @@ private fun SortingBar(isSortedByProductCode: Boolean, toggleSorting: () -> Unit
 @Composable
 fun ListingsScreenPreview() {
     WorkshopTheme {
-        ListingsScreen { }
+        ListingsScreen ({ }, { })
     }
 }
