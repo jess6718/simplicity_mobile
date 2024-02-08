@@ -6,7 +6,7 @@ object ListingDetailsRepository {
 
     fun getMockListingDetails(id: String): ListingDetails {
         return ListingDetails(
-            productCode = "BG011AQA",
+            productCode = "041412",
             price = "\$100.00",
             imageUrl = "https://c1-ebgames.eb-cdn.com.au/merchandising/images/packshots/651ffac073d643a9acfe0ad022cb88b8_Large.jpg",
             description = "The Pikachu plush toy",

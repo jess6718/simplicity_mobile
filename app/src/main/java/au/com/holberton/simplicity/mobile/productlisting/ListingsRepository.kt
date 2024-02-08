@@ -6,7 +6,7 @@ object ListingsRepository {
         return listOf(
             ListingSummary(
                 "yvg5h",
-                "BG011AQA",
+                "041412",
                 "\$100.00",
                 "https://c1-ebgames.eb-cdn.com.au/merchandising/images/packshots/651ffac073d643a9acfe0ad022cb88b8_Large.jpg",
                 67,
