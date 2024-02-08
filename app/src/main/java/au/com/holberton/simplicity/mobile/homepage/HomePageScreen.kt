@@ -29,13 +29,13 @@ import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
 fun HomePageScreen(navigate: (String) -> Unit) {
     Row(
         modifier = Modifier
-            .clickable { navigate("listings") }
             .padding(top=100.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
+                .clickable { navigate("listings") }
                 .size(width = 200.dp, height = 150.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.colors.primary)
@@ -63,6 +63,7 @@ fun HomePageScreen(navigate: (String) -> Unit) {
         }
         Box(
             modifier = Modifier
+                .clickable { navigate("scanner") }
                 .size(width = 200.dp, height = 150.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.colors.primary)
