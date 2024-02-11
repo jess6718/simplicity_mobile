@@ -1,10 +1,12 @@
 package au.com.holberton.simplicity.mobile.barcodescanner.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,7 +25,9 @@ fun ScanSheet(
     onCopyClicked: () -> Unit,
     onWebClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    navigate: (String) -> Unit,
 ) {
+
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
@@ -41,7 +45,7 @@ fun ScanSheet(
             )
         ) {}
         Text(
-            text = stringResource(id = scan.scanFormatId),
+            text = "Product Code",
             style = MaterialTheme.typography.h6,
             fontWeight = FontWeight.Bold
         )
@@ -49,7 +53,9 @@ fun ScanSheet(
             Surface(
                 shape = MaterialTheme.shapes.medium,
                 elevation = 4.dp,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable{navigate("listingDetails/${scan.displayValue}")}
             ) {
                 Text(
                     text = scan.displayValue,
@@ -59,7 +65,6 @@ fun ScanSheet(
                 )
             }
         }
-        Divider()
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End),
             verticalAlignment = Alignment.CenterVertically,
