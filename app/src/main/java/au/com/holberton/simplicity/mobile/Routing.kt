@@ -17,6 +17,6 @@ fun Routing() {
         composable("home") { HomePageScreen(navController::navigate) }
         composable("listings") { ListingsScreen(navController::navigate, navController::popBackStack) }
         composable("listingDetails/{listingId}") { ListingDetailsScreen(navController::popBackStack, it.arguments?.getString("listingId")) }
-        composable("scanner") { ScannerPage() }
+        composable("scanner") { ScannerPage(navController::navigate) }
     }
 }

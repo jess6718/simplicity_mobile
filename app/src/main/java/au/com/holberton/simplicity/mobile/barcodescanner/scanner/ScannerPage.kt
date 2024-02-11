@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ScannerPage(
+    navigate: (String) -> Unit,
     viewModel: ScannerViewModel = hiltViewModel()
 ) {
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -82,7 +83,7 @@ fun ScannerPage(
     }
 
     SideEffect {
-        if (uiState.showBottomSheet) { // Showing "Scanner Code" at bottom, non-required feature, can be deleted
+        if (uiState.showBottomSheet) {
             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
             coroutineScope.launch { if (!bottomSheetState.isVisible) bottomSheetState.show() }
             viewModel.onEvent(ScannerEvent.BottomSheetShown)
@@ -105,7 +106,8 @@ fun ScannerPage(
     ScannerPage(
         bottomSheetState = bottomSheetState,
         uiState = uiState,
-        context = context
+        context = context,
+        navigate = navigate
     )
 }
 
@@ -114,7 +116,8 @@ fun ScannerPage(
 private fun ScannerPage(
     bottomSheetState: ModalBottomSheetState,
     uiState: ScannerUiState,
-    context: Context
+    context: Context,
+    navigate: (String) -> Unit,
 ) {
     val clipboardManager = LocalClipboardManager.current
     val uriHandler = LocalUriHandler.current
@@ -146,6 +149,7 @@ private fun ScannerPage(
                     onWebClicked = {
                         uriHandler.openUri(it.displayValue)
                     },
+                    navigate = navigate,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)

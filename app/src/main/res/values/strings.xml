@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Simplicity</string>
     <!-- Scan screen -->
-    <string name="scan_message">Frame a QR or bar code</string>
+    <string name="scan_message">Please scan product bar code</string>
     <string name="scan_share_value">Share content</string>
     <string name="scan_value_copied">Content copied</string>
 
