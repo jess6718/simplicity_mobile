@@ -130,25 +130,6 @@ private fun ScannerPage(
             uiState.scan?.let {
                 ScanSheet(
                     scan = it,
-                    onShareClicked = {
-                        context.startActivity(
-                            Intent.createChooser(
-                                Intent().apply {
-                                    action = Intent.ACTION_SEND
-                                    putExtra(Intent.EXTRA_TEXT, it.displayValue)
-                                    type = "text/plain"
-                                },
-                                context.getString(R.string.scan_share_value)
-                            )
-                        )
-                    },
-                    onCopyClicked = {
-                        clipboardManager.setText(AnnotatedString(it.displayValue))
-                        Toast.makeText(context, context.getText(R.string.scan_value_copied), Toast.LENGTH_SHORT).show()
-                    },
-                    onWebClicked = {
-                        uriHandler.openUri(it.displayValue)
-                    },
                     navigate = navigate,
                     modifier = Modifier
                         .fillMaxWidth()

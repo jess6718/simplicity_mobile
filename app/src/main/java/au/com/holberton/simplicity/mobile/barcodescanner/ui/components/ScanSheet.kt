@@ -21,9 +21,6 @@ import au.com.holberton.simplicity.mobile.R
 @Composable
 fun ScanSheet(
     scan: Scan,
-    onShareClicked: () -> Unit,
-    onCopyClicked: () -> Unit,
-    onWebClicked: () -> Unit,
     modifier: Modifier = Modifier,
     navigate: (String) -> Unit,
 ) {
@@ -62,54 +59,6 @@ fun ScanSheet(
                     style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(8.dp)
-                )
-            }
-        }
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            FloatingActionButton(
-                onClick = onShareClicked,
-                backgroundColor = DarkGrey,
-                contentColor = LightYellow,
-                modifier = Modifier.requiredSize(48.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Share,
-                    contentDescription = null
-                )
-            }
-            FloatingActionButton(
-                onClick = onCopyClicked,
-                backgroundColor = DarkGrey,
-                contentColor = LightYellow,
-                modifier = Modifier.requiredSize(48.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ContentCopy,
-                    contentDescription = null
-                )
-            }
-            if (scan.scanType == ScanType.Url) {
-                ExtendedFloatingActionButton(
-                    backgroundColor = DarkGrey,
-                    contentColor = LightYellow,
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Public,
-                            contentDescription = null
-                        )
-                    },
-                    text = {
-                        Text(
-                            text = stringResource(id = R.string.scan_sheet_web_action),
-                            style = MaterialTheme.typography.body1,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    },
-                    onClick = onWebClicked
                 )
             }
         }
