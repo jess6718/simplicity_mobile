@@ -28,10 +28,7 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
     fun getFilteredListings(): List<ListingSummary> {
         val filteredListings = listings.value
             .filter {
-                 it.productCode.contains(
-                    searchTerm.value,
-                    ignoreCase = true
-                ) || it.productName.contains(
+                  it.name.contains(
                      searchTerm.value,
                     ignoreCase = true
                 )
@@ -41,15 +38,19 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
             emptyList()
         } else {
             if (isSortedByProductCode.value) {
-                filteredListings.sortedBy { it.productCode }
+                filteredListings.sortedBy { it.upc }
             } else {
                 filteredListings
             }
         }
     }
 
-    // TODO task 4.1: Fetch data for listings screen
-    listings.value = ListingsRepository.getMockListings()
+    // Create an effect that matches the lifecycle of ListingsScreen.
+    // If ListingsScreen recomposes, the fetch shouldn't start again.
+
+    LaunchedEffect(true) {
+        listings.value = ListingsRepository.getListings()
+    }
 
     Scaffold(
         topBar = {
@@ -110,28 +111,28 @@ private fun ListingCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navigate("listingDetails/${listingSummary.id}") },
+            .clickable { navigate("listingDetails/${listingSummary._id}") },
         elevation = 2.dp
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            AsyncImage(
-                model = listingSummary.imageUrl,
-                contentDescription = "Listing image",
-                modifier = Modifier
-                    .height(65.dp)
-                    .width(65.dp),
-                contentScale = ContentScale.FillBounds
-            )
+//            AsyncImage(
+//                model = listingSummary.imageUrl,
+//                contentDescription = "Listing image",
+//                modifier = Modifier
+//                    .height(65.dp)
+//                    .width(65.dp),
+//                contentScale = ContentScale.FillBounds
+//            )
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
-                    text = listingSummary.productCode,
+                    text = listingSummary.upc.toString(),
                     style = MaterialTheme.typography.body1,
                     color = MaterialTheme.colors.primary,
                 )
             }
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
-                    text = listingSummary.productName,
+                    text = listingSummary.name,
                     style = MaterialTheme.typography.body1,
                     color = MaterialTheme.colors.primary
                 )
@@ -145,7 +146,7 @@ private fun ListingCard(
             }
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
-                    text = listingSummary.price,
+                    text = listingSummary.salePrice.toString(),
                     style = MaterialTheme.typography.body1,
                     color = MaterialTheme.colors.primary
                 )
