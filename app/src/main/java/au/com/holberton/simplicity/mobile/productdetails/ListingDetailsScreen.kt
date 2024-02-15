@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,12 +24,14 @@ import au.com.holberton.simplicity.mobile.productlisting.ListingsRepository
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
 
 @Composable
-fun ListingDetailsScreen(onBackPressed: () -> Unit, listingId: String?) {
+fun ListingDetailsScreen(onBackPressed: () -> Unit, id: String?) {
     val listingDetails = remember { mutableStateOf<ListingDetails?>(null) }
 
     // TODO task 4.2: Fetch data for listing details screen
-    listingId?.let {
-        listingDetails.value = ListingDetailsRepository.getMockListingDetails(it)
+    LaunchedEffect(true) {
+        id?.let {
+            listingDetails.value = ListingDetailsRepository.getListingDetails(it)
+        }
     }
 
     Scaffold(
@@ -76,7 +79,7 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
         ) {
             // Display product name and product code in the same line
             Text(
-                text = "Name: ${listingDetails.productName}",
+                text = "Name: ${listingDetails.name}",
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier
@@ -84,7 +87,7 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
                     .padding(vertical = 10.dp)
             )
             Text(
-                text = "Code: ${listingDetails.productCode}",
+                text = "UPC Code: ${listingDetails.upc}",
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier
@@ -100,7 +103,7 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
                 .padding()
         ) {
             Text(
-                text = "Price: ${listingDetails.price}",
+                text = "Price: ${listingDetails.salePrice}",
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier.padding(vertical = 10.dp)
@@ -128,7 +131,7 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
                 .padding()
         ) {
             Text(
-                text = "Description: ${listingDetails.description}",
+                text = "Category: ${listingDetails.category}",
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier.padding(vertical = 10.dp)
@@ -151,8 +154,8 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
             OutlinedTextField(
                 value = quantity.value.toString(),
                 onValueChange = { qtyText ->
-                    // Attempt to convert the entered text to an Int
-                    quantity.value = qtyText.toIntOrNull() ?:0
+                    // Attempt to convert the entered text to an Double
+                    quantity.value = qtyText.toDoubleOrNull() ?:0.0
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -164,30 +167,6 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
         }
     }
 }
-
-    /* Text(
-        listingDetails.productCode,
-        style = MaterialTheme.typography.subtitle1,
-        fontWeight = FontWeight.SemiBold
-    ) */
-
-    /* Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            "Bookmarked",
-            style = MaterialTheme.typography.caption,
-            fontWeight = FontWeight.SemiBold
-        )
-        Switch(
-            checked = isBookmarked.value,
-            onCheckedChange = {
-                isBookmarked.value = it
-            }
-        ) */
-
-
 
 @Preview(showBackground = true)
 @Composable

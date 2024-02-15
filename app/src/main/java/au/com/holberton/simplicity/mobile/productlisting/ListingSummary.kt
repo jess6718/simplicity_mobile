@@ -12,17 +12,5 @@ data class ListingSummary(
     val upc: Double,
     val costPrice: Double,
     val salePrice: Double,
-    val createdAt: String,
-    val updatedAt: String,
-    val __v: Int
+    val location: String
 )
-
-//@Serializable
-//data class ListingsResponse(val listings: List<ListingSummary>)
-
-//    val id: String,
-//    val productCode: String,
-//    val price: String,
-//    val imageUrl: String,
-//    val quantity: Int,
-//    val productName: String

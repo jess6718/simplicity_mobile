@@ -1,13 +1,16 @@
 package au.com.holberton.simplicity.mobile.productdetails
 
+import kotlinx.serialization.Serializable
+
 // TODO task 4.2: Fetch data for listing details screen
+@Serializable
 data class ListingDetails(
-    val productCode: String,
-    val price: String,
-    val imageUrl: String,
-    val description: String?,
-    val url: String, //todo del
-    val quantity: Int,
-    val productName: String,
-    val location: String
+    val _id: String,
+    val name: String,
+    val category: String,
+    val quantity: Double,
+    val upc: Double,
+    val costPrice: Double,
+    val salePrice: Double,
+    val location: String,
 )
