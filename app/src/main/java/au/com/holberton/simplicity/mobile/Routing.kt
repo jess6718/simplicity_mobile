@@ -16,7 +16,10 @@ fun Routing() {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { HomePageScreen(navController::navigate) }
         composable("listings") { ListingsScreen(navController::navigate, navController::popBackStack) }
-        composable("listingDetails/{id}") { ListingDetailsScreen(navController::popBackStack, it.arguments?.getString("id")) }
+        composable("listingDetails/{upc}") { backStackEntry ->
+            val upcString = backStackEntry.arguments?.getString("upc")
+            val upcDouble = upcString?.toDoubleOrNull()
+            ListingDetailsScreen(navController::popBackStack, upcDouble)}
         composable("scanner") { ScannerPage(navController::navigate) }
     }
 }

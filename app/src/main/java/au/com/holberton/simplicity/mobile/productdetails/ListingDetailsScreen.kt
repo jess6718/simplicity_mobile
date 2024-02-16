@@ -24,12 +24,12 @@ import au.com.holberton.simplicity.mobile.productlisting.ListingsRepository
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
 
 @Composable
-fun ListingDetailsScreen(onBackPressed: () -> Unit, id: String?) {
+fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Double?) {
     val listingDetails = remember { mutableStateOf<ListingDetails?>(null) }
 
     // TODO task 4.2: Fetch data for listing details screen
     LaunchedEffect(true) {
-        id?.let {
+        upc?.let {
             listingDetails.value = ListingDetailsRepository.getListingDetails(it)
         }
     }
@@ -63,10 +63,10 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, id: String?) {
 // TODO bonus challenge: Complete Listing Details Screen
 @Composable
 private fun ListingDetailsView(listingDetails: ListingDetails) {
-    /* val isBookmarked = remember {
-        mutableStateOf(false)
-    } */
+
     val quantity = remember { mutableStateOf(listingDetails.quantity) }
+    val upcString = String.format("%.0f", listingDetails.upc)
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -87,7 +87,7 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
                     .padding(vertical = 10.dp)
             )
             Text(
-                text = "UPC Code: ${listingDetails.upc}",
+                text = "UPC Code: $upcString",
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier
@@ -172,6 +172,6 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
 @Composable
 fun ListingDetailScreenPreview() {
     WorkshopTheme {
-        ListingDetailsScreen({ }, "ABC")
+        ListingDetailsScreen({ }, 9319133337497.00)
     }
 }
