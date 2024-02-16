@@ -103,11 +103,12 @@ private fun ListingCard(
     listingSummary: ListingSummary,
     navigate: (String) -> Unit
 ) {
+    val upcString = String.format("%.0f", listingSummary.upc)
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navigate("listingDetails/${listingSummary._id}") },
+            .clickable { navigate("listingDetails/${listingSummary.upc}") },
         elevation = 2.dp
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -121,7 +122,7 @@ private fun ListingCard(
 //            )
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
-                    text = listingSummary.upc.toString(),
+                    text = upcString,
                     style = MaterialTheme.typography.body1,
                     color = MaterialTheme.colors.primary,
                 )

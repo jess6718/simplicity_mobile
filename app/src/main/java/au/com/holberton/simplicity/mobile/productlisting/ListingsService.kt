@@ -13,8 +13,8 @@ interface ListingsService {
     @GET("api/item")
     suspend fun getListings(): List<ListingSummary>
 
-    @GET("api/item/id/{id}")
-    suspend fun getListingDetails(@Path("id") id: String): ListingDetails
+    @GET("api/item/upc/{upc}")
+    suspend fun getListingDetails(@Path("upc") upc: Double): ListingDetails
 }
 
 // No need to change below

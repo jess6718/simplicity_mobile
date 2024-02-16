@@ -52,7 +52,10 @@ fun ScanSheet(
                 elevation = 4.dp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable{navigate("listingDetails/${scan.displayValue}")}
+                    .clickable{
+                        scan.displayValue.toDoubleOrNull()?.let { upc ->
+                            navigate("listingDetails/$upc")}
+                    }
             ) {
                 Text(
                     text = scan.displayValue,
