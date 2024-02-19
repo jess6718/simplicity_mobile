@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import au.com.holberton.simplicity.mobile.productlisting.ListingDetailsRepository
 import au.com.holberton.simplicity.mobile.productlisting.ListingsRepository
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Double?) {
@@ -175,7 +178,9 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
                 textStyle = MaterialTheme.typography.body1
             )
             Button(
-                onClick = { /*call API*/ },
+                onClick = { CoroutineScope(Dispatchers.IO).launch {
+                    ListingDetailsRepository.updateItemQty(listingDetails.upc, quantity.value) }
+                          },
                 modifier = Modifier
                     .height(40.dp)
                     .width(100.dp)
