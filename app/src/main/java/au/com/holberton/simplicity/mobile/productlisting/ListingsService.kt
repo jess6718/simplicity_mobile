@@ -7,6 +7,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ListingsService {
@@ -15,6 +16,9 @@ interface ListingsService {
 
     @GET("api/item/upc/{upc}")
     suspend fun getListingDetails(@Path("upc") upc: Double): ListingDetails
+
+    @PUT("api/item/upc/{upc}/quantity/{quantity}")
+    suspend fun updateQuantity(@Path("upc") upc: Double, @Path("quantity") quantity: Int?): Unit
 }
 
 // No need to change below

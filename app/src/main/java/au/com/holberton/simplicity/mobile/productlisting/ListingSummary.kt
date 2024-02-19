@@ -8,7 +8,7 @@ data class ListingSummary(
     val _id: String,
     val name: String,
     val category: String,
-    val quantity: Double,
+    val quantity: Int?,
     val upc: Double,
     val costPrice: Double,
     val salePrice: Double,
