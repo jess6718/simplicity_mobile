@@ -1,7 +1,9 @@
 package au.com.holberton.simplicity.mobile.productdetails
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,6 +33,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Double?) {
     val listingDetails = remember { mutableStateOf<ListingDetails?>(null) }
+    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
 
     // TODO task 4.2: Fetch data for listing details screen
     LaunchedEffect(true) {
@@ -40,6 +45,7 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Double?) {
     }
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = { Text(text = "Item Information") },
@@ -51,7 +57,8 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Double?) {
                         )
                     }
                 })
-        }
+        },
+        snackbarHost = { TopSnackbarHost(snackbarHostState) } // Integrate the custom Snackbar host
     ) { padding ->
         Column(
             modifier = Modifier
@@ -59,7 +66,7 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Double?) {
                 .verticalScroll(rememberScrollState())
         ) {
             listingDetails?.value?.let {
-                ListingDetailsView(it)
+                ListingDetailsView(it, scaffoldState, snackbarHostState)
             }
         }
     }
@@ -67,7 +74,11 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Double?) {
 
 // TODO bonus challenge: Complete Listing Details Screen
 @Composable
-private fun ListingDetailsView(listingDetails: ListingDetails) {
+private fun ListingDetailsView(
+    listingDetails: ListingDetails,
+    scaffoldState: ScaffoldState,
+    snackbarHostState: SnackbarHostState
+) {
 
     val quantity = remember { mutableStateOf(listingDetails.quantity) }
     val upcString = String.format("%.0f", listingDetails.upc)
@@ -178,9 +189,18 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
                 textStyle = MaterialTheme.typography.body1
             )
             Button(
-                onClick = { CoroutineScope(Dispatchers.IO).launch {
-                    ListingDetailsRepository.updateItemQty(listingDetails.upc, quantity.value) }
-                          },
+                onClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        // Call the API to update item quantity
+                        ListingDetailsRepository.updateItemQty(listingDetails.upc, quantity.value)
+
+                        // Show the success message
+                        snackbarHostState.showSnackbar(
+                            message = "Update successful",
+                            duration = SnackbarDuration.Short
+                        )
+                    }
+                },
                 modifier = Modifier
                     .height(40.dp)
                     .width(100.dp)
@@ -189,6 +209,26 @@ private fun ListingDetailsView(listingDetails: ListingDetails) {
                 Text(text = "update")
             }
         }
+    }
+}
+
+@Composable
+fun TopSnackbarHost(
+    snackbarHostState: SnackbarHostState
+) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        SnackbarHost(
+            hostState = snackbarHostState,
+            snackbar = { data ->
+                Snackbar(
+                    snackbarData = data,
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
+            }
+        )
     }
 }
 
