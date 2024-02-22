@@ -11,7 +11,7 @@ data class ListingDetails(
     val name: String,
     val category: String,
     val quantity: Int?,
-    val upc: Double,
+    val upc: Long,
     val costPrice: Double,
     val salePrice: Double,
     val location: String,

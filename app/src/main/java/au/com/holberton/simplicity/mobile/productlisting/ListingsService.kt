@@ -15,10 +15,10 @@ interface ListingsService {
     suspend fun getListings(): List<ListingSummary>
 
     @GET("api/item/upc/{upc}")
-    suspend fun getListingDetails(@Path("upc") upc: Double): ListingDetails
+    suspend fun getListingDetails(@Path("upc") upc: Long): ListingDetails
 
     @PUT("api/item/upc/{upc}/quantity/{quantity}")
-    suspend fun updateQuantity(@Path("upc") upc: Double, @Path("quantity") quantity: Int?): Unit
+    suspend fun updateQuantity(@Path("upc") upc: Long, @Path("quantity") quantity: Int?): Unit
 }
 
 // No need to change below
@@ -26,7 +26,7 @@ object ListingApi {
     val service: ListingsService = buildRetrofit().create(ListingsService::class.java)
     @OptIn(ExperimentalSerializationApi::class)
     private fun buildRetrofit(): Retrofit {
-        //val baseUrl = "https://virtserver.swaggerhub.com/UCSANTOS/Simplicity/1.0.0/"
+        //val baseUrl = "https://virtserver.swaggerhub.com/UCSANTOS/Simplicity/1.0.0/" //issue with deployed IP
         val baseUrl = "http://192.168.1.100:3030/"
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()

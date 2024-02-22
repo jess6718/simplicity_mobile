@@ -27,6 +27,9 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
                   it.name.contains(
                      searchTerm.value,
                     ignoreCase = true
+                ) || it.upc.toString().contains(
+                    searchTerm.value,
+                    ignoreCase = true
                 )
             }
         //If search term empty return empty list
@@ -103,7 +106,7 @@ private fun ListingCard(
     listingSummary: ListingSummary,
     navigate: (String) -> Unit
 ) {
-    val upcString = String.format("%.0f", listingSummary.upc)
+    val upcString = listingSummary.upc.toString()
     Card(
         modifier = Modifier
             .fillMaxWidth()
