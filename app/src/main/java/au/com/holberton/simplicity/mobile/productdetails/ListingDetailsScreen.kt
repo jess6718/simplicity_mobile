@@ -30,6 +30,8 @@ import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.HttpException
 import java.lang.Exception
 
@@ -40,10 +42,29 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
     val snackbarHostState = remember { SnackbarHostState() }
 
 
-    // TODO task 4.2: Fetch data for listing details screen
     LaunchedEffect(true) {
         upc?.let {
-            listingDetails.value = ListingDetailsRepository.getListingDetails(it)
+            try {
+                listingDetails.value = ListingDetailsRepository.getListingDetails(it)
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                if (errorBody != null) {
+                    try {
+                        val jsonObject = JSONObject(errorBody)
+                        val errorMessage = jsonObject.getString("message")
+                        snackbarHostState.showSnackbar(
+                            message = errorMessage,
+                            duration = SnackbarDuration.Short
+                        )
+                    } catch (e: JSONException) {
+                        // If there's an error parsing the JSON response, show a generic error message
+                        snackbarHostState.showSnackbar(
+                            message = "Item not found",
+                            duration = SnackbarDuration.Short
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -75,7 +96,6 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
     }
 }
 
-// TODO bonus challenge: Complete Listing Details Screen
 @Composable
 private fun ListingDetailsView(
     listingDetails: ListingDetails,

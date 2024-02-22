@@ -4,7 +4,6 @@ import au.com.holberton.simplicity.mobile.productlisting.DateSerializer
 import kotlinx.serialization.Serializable
 import java.util.Date
 
-// TODO task 4.2: Fetch data for listing details screen
 @Serializable
 data class ListingDetails(
     val _id: String,
