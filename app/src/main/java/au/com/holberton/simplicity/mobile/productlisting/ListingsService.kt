@@ -26,7 +26,8 @@ object ListingApi {
     val service: ListingsService = buildRetrofit().create(ListingsService::class.java)
     @OptIn(ExperimentalSerializationApi::class)
     private fun buildRetrofit(): Retrofit {
-        val baseUrl = "http://10.0.2.2:3030/"
+        //val baseUrl = "https://virtserver.swaggerhub.com/UCSANTOS/Simplicity/1.0.0/"
+        val baseUrl = "http://192.168.1.100:3030/"
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
             .baseUrl(baseUrl)
