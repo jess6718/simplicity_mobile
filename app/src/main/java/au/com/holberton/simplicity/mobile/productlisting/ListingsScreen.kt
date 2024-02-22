@@ -74,7 +74,6 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
                 Header() // Add header for listed products
             }
 
-            // TODO task 2: Display multiple listing cards
             LazyColumn{
                     items(getFilteredListings()) {
                         ListingCard(it, navigate)
@@ -86,7 +85,6 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
 
 @Composable
 private fun Header() {
-    // TODO: Implement the header with image, product code, product name, quantity, and price
     Row(
         modifier = Modifier
             .fillMaxWidth()
