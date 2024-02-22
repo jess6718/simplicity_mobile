@@ -24,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import au.com.holberton.simplicity.mobile.common.CommonComponent.TopSnackbarHost
+import au.com.holberton.simplicity.mobile.common.ExceptionHandler
 import au.com.holberton.simplicity.mobile.productlisting.ListingDetailsRepository
 import au.com.holberton.simplicity.mobile.productlisting.ListingsRepository
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
@@ -34,33 +36,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.lang.Exception
-
-
-suspend fun exceptionHandler(exception: Exception, snackbarHostState: SnackbarHostState): Unit {
-    if(exception is HttpException) {
-        val errorBody = exception.response()?.errorBody()?.string()
-        if (errorBody != null) {
-            try {
-                val jsonObject = JSONObject(errorBody)
-                val errorMessage = jsonObject.getString("message")
-                snackbarHostState.showSnackbar(
-                    message = errorMessage,
-                    duration = SnackbarDuration.Short
-                )
-            } catch (e: JSONException) {
-                // If there's an error parsing the JSON response, show a generic error message
-                snackbarHostState.showSnackbar(
-                    message = "API response incorrect format",
-                    duration = SnackbarDuration.Short
-                )
-            }
-        }
-    }
-    snackbarHostState.showSnackbar(
-        message = "Server response fails",
-        duration = SnackbarDuration.Short
-    )
-}
 
 @Composable
 fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
@@ -74,7 +49,7 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
             try {
                 listingDetails.value = ListingDetailsRepository.getListingDetails(it)
             } catch (error: Exception) {
-                exceptionHandler(error, snackbarHostState)
+                ExceptionHandler.exceptionHandler(error, snackbarHostState)
             }
         }
     }
@@ -245,25 +220,25 @@ private fun ListingDetailsView(
     }
 }
 
-@Composable
-fun TopSnackbarHost(
-    snackbarHostState: SnackbarHostState
-) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        SnackbarHost(
-            hostState = snackbarHostState,
-            snackbar = { data ->
-                Snackbar(
-                    snackbarData = data,
-                    modifier = Modifier.align(Alignment.TopCenter)
-                )
-            }
-        )
-    }
-}
+//@Composable
+//fun TopSnackbarHost(
+//    snackbarHostState: SnackbarHostState
+//) {
+//    Box(
+//        modifier = Modifier.fillMaxSize(),
+//        contentAlignment = Alignment.Center
+//    ) {
+//        SnackbarHost(
+//            hostState = snackbarHostState,
+//            snackbar = { data ->
+//                Snackbar(
+//                    snackbarData = data,
+//                    modifier = Modifier.align(Alignment.TopCenter)
+//                )
+//            }
+//        )
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable
