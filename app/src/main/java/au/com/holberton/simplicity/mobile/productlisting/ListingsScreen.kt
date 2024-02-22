@@ -12,13 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import au.com.holberton.simplicity.mobile.common.CommonComponent
+import au.com.holberton.simplicity.mobile.common.ExceptionHandler
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
+import java.lang.Exception
 
 @Composable
 fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
     val searchTerm = remember { mutableStateOf("") }
     val isSortedByProductCode = remember { mutableStateOf(false) }
     val listings = remember { mutableStateOf(emptyList<ListingSummary>()) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
     // TODO task 3: Filter and sort listings
     fun getFilteredListings(): List<ListingSummary> {
@@ -48,7 +52,12 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
     // If ListingsScreen recomposes, the fetch shouldn't start again.
 
     LaunchedEffect(true) {
-        listings.value = ListingsRepository.getListings()
+        try {
+            listings.value = ListingsRepository.getListings()
+        } catch (error: Exception) {
+            ExceptionHandler.exceptionHandler(error, snackbarHostState)
+        }
+
     }
 
     Scaffold(
@@ -62,7 +71,8 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
                     )
                 }
             })
-        }
+        },
+        snackbarHost = { CommonComponent.TopSnackbarHost(snackbarHostState) }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             SearchBar(searchTerm = searchTerm.value, onValueChange = { searchTerm.value = it })
