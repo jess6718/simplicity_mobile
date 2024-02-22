@@ -53,7 +53,7 @@ fun ScanSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable{
-                        scan.displayValue.toDoubleOrNull()?.let { upc ->
+                        scan.displayValue.toLongOrNull()?.let { upc ->
                             navigate("listingDetails/$upc")}
                     }
             ) {

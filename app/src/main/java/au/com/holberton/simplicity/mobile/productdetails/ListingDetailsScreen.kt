@@ -1,5 +1,6 @@
 package au.com.holberton.simplicity.mobile.productdetails
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,9 +30,11 @@ import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.lang.Exception
 
 @Composable
-fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Double?) {
+fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
     val listingDetails = remember { mutableStateOf<ListingDetails?>(null) }
     val scaffoldState = rememberScaffoldState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -81,7 +84,7 @@ private fun ListingDetailsView(
 ) {
 
     val quantity = remember { mutableStateOf(listingDetails.quantity) }
-    val upcString = String.format("%.0f", listingDetails.upc)
+    val upcString = listingDetails.upc.toString()
 
     Column(
         modifier = Modifier
@@ -236,6 +239,6 @@ fun TopSnackbarHost(
 @Composable
 fun ListingDetailScreenPreview() {
     WorkshopTheme {
-        ListingDetailsScreen({ }, 9319133337497.00)
+        ListingDetailsScreen({ }, 9319133337497)
     }
 }

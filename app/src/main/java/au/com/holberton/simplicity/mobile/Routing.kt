@@ -18,8 +18,8 @@ fun Routing() {
         composable("listings") { ListingsScreen(navController::navigate, navController::popBackStack) }
         composable("listingDetails/{upc}") { backStackEntry ->
             val upcString = backStackEntry.arguments?.getString("upc")
-            val upcDouble = upcString?.toDoubleOrNull()
-            ListingDetailsScreen(navController::popBackStack, upcDouble)}
+            val upcLong = upcString?.toLongOrNull()
+            ListingDetailsScreen(navController::popBackStack, upcLong)}
         composable("scanner") { ScannerPage(navController::navigate) }
     }
 }
