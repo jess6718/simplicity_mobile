@@ -15,5 +15,8 @@ data class ListingSummary(
     val salePrice: Double,
     val location: String,
     @Serializable(with = DateSerializer::class)
-    val updatedAt: Date?
+    val createdAt: Date? = null,
+    @Serializable(with = DateSerializer::class)
+    val updatedAt: Date? = null,
+    val __v: Int? = null,
 )
