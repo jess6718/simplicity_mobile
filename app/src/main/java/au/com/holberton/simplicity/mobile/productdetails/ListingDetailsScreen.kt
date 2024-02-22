@@ -35,6 +35,33 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import java.lang.Exception
 
+
+suspend fun exceptionHandler(exception: Exception, snackbarHostState: SnackbarHostState): Unit {
+    if(exception is HttpException) {
+        val errorBody = exception.response()?.errorBody()?.string()
+        if (errorBody != null) {
+            try {
+                val jsonObject = JSONObject(errorBody)
+                val errorMessage = jsonObject.getString("message")
+                snackbarHostState.showSnackbar(
+                    message = errorMessage,
+                    duration = SnackbarDuration.Short
+                )
+            } catch (e: JSONException) {
+                // If there's an error parsing the JSON response, show a generic error message
+                snackbarHostState.showSnackbar(
+                    message = "API response incorrect format",
+                    duration = SnackbarDuration.Short
+                )
+            }
+        }
+    }
+    snackbarHostState.showSnackbar(
+        message = "Server response fails",
+        duration = SnackbarDuration.Short
+    )
+}
+
 @Composable
 fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
     val listingDetails = remember { mutableStateOf<ListingDetails?>(null) }
@@ -46,24 +73,8 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
         upc?.let {
             try {
                 listingDetails.value = ListingDetailsRepository.getListingDetails(it)
-            } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                if (errorBody != null) {
-                    try {
-                        val jsonObject = JSONObject(errorBody)
-                        val errorMessage = jsonObject.getString("message")
-                        snackbarHostState.showSnackbar(
-                            message = errorMessage,
-                            duration = SnackbarDuration.Short
-                        )
-                    } catch (e: JSONException) {
-                        // If there's an error parsing the JSON response, show a generic error message
-                        snackbarHostState.showSnackbar(
-                            message = "Item not found",
-                            duration = SnackbarDuration.Short
-                        )
-                    }
-                }
+            } catch (error: Exception) {
+                exceptionHandler(error, snackbarHostState)
             }
         }
     }
@@ -90,7 +101,7 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
                 .verticalScroll(rememberScrollState())
         ) {
             listingDetails?.value?.let {
-                ListingDetailsView(it, scaffoldState, snackbarHostState)
+                ListingDetailsView(it, snackbarHostState)
             }
         }
     }
@@ -99,7 +110,6 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
 @Composable
 private fun ListingDetailsView(
     listingDetails: ListingDetails,
-    scaffoldState: ScaffoldState,
     snackbarHostState: SnackbarHostState
 ) {
 
