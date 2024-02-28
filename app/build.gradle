@@ -24,9 +24,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", "\"http://192.168.1.100:3030/\"" // localhost
+        }
         release {
+            buildConfigField "String", "BASE_URL", "\"https://virtserver.swaggerhub.com/UCSANTOS/Simplicity/1.0.0/\"" // deployed
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
