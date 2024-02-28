@@ -1,5 +1,6 @@
 package au.com.holberton.simplicity.mobile.productlisting
 
+import au.com.holberton.simplicity.mobile.BuildConfig
 import au.com.holberton.simplicity.mobile.productdetails.ListingDetails
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -26,11 +27,10 @@ object ListingApi {
     val service: ListingsService = buildRetrofit().create(ListingsService::class.java)
     @OptIn(ExperimentalSerializationApi::class)
     private fun buildRetrofit(): Retrofit {
-        //val baseUrl = "https://virtserver.swaggerhub.com/UCSANTOS/Simplicity/1.0.0/" //issue with deployed IP
-        val baseUrl = "http://192.168.1.100:3030/"
+
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
     }
