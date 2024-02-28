@@ -1,14 +1,18 @@
 package au.com.holberton.simplicity.mobile.productdetails
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -31,12 +35,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import au.com.holberton.simplicity.mobile.common.CommonComponent.TopSnackbarHost
+import au.com.holberton.simplicity.mobile.common.CommonComponent
 import au.com.holberton.simplicity.mobile.common.ExceptionHandler
 import au.com.holberton.simplicity.mobile.productlisting.ListingDetailsRepository
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
@@ -45,7 +50,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
+fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?, navigate: (String) -> Unit) {
     val listingDetails = remember { mutableStateOf<ListingDetails?>(null) }
     val scaffoldState = rememberScaffoldState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -75,7 +80,31 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?) {
                     }
                 })
         },
-        snackbarHost = { TopSnackbarHost(snackbarHostState) } // Integrate the custom Snackbar host
+        bottomBar = {
+            BottomAppBar(
+                backgroundColor = Color.Transparent,
+                contentColor = Color.Transparent,
+                elevation = 0.dp, // Set the elevation to 0 to remove any shadow
+                cutoutShape = CircleShape // Set the cutout shape to remove any visible shape
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Spacer(modifier = Modifier.weight(1f)) // Add a spacer to push the button to the center
+
+                    Button(
+                        onClick = { navigate("home") },
+                        modifier = Modifier
+                            .padding(8.dp)
+                    ) {
+                        Text(text = "Home")
+                    }
+                    Spacer(modifier = Modifier.weight(1f)) // Add another spacer to push the button to the center
+                }
+            }
+        },
+        snackbarHost = { CommonComponent.TopSnackbarHost(snackbarHostState) }, // Integrate the custom Snackbar host
     ) { padding ->
         Column(
             modifier = Modifier
@@ -245,6 +274,6 @@ private fun ListingDetailsView(
 @Composable
 fun ListingDetailScreenPreview() {
     WorkshopTheme {
-        ListingDetailsScreen({ }, 9319133337497)
+        ListingDetailsScreen({ }, 9319133337497, { })
     }
 }
