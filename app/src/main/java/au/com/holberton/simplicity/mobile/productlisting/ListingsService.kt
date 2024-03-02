@@ -6,6 +6,8 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.PUT
@@ -20,6 +22,9 @@ interface ListingsService {
 
     @PUT("api/item/upc/{upc}/quantity/{quantity}")
     suspend fun updateQuantity(@Path("upc") upc: Long, @Path("quantity") quantity: Int?): Unit
+
+    @GET("api/image/id/{id}")
+    suspend fun getItemImageById(@Path("id") id: String): Response<ResponseBody>
 }
 
 // No need to change below
