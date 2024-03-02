@@ -1,21 +1,46 @@
 package au.com.holberton.simplicity.mobile.productlisting
 
+import android.graphics.Bitmap
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.RadioButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import au.com.holberton.simplicity.mobile.common.CommonComponent
 import au.com.holberton.simplicity.mobile.common.ExceptionHandler
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
-import java.lang.Exception
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
@@ -115,6 +140,21 @@ private fun ListingCard(
     navigate: (String) -> Unit
 ) {
     val upcString = listingSummary.upc.toString()
+    // Define a mutable state to hold the image bitmap
+    val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
+
+    // Fetch the image bitmap asynchronously
+    LaunchedEffect(key1 = listingSummary._id) {
+        withContext(Dispatchers.IO) {
+            try {
+                val bitmap = ListingsRepository.getItemImageById(listingSummary._id)
+                bitmapState.value = bitmap
+            } catch (e: Exception) {
+                Log.e("ListingCard", "Error fetching image: ${e.message}")
+            }
+        }
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -123,14 +163,17 @@ private fun ListingCard(
         elevation = 2.dp
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-//            AsyncImage(
-//                model = listingSummary.imageUrl,
-//                contentDescription = "Listing image",
-//                modifier = Modifier
-//                    .height(65.dp)
-//                    .width(65.dp),
-//                contentScale = ContentScale.FillBounds
-//            )
+            // Display the image bitmap if available
+            bitmapState.value?.let { bitmap ->
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = "Listing image",
+                    modifier = Modifier
+                        .height(65.dp)
+                        .width(65.dp),
+                    contentScale = ContentScale.FillBounds
+                )
+            }
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
                     text = upcString,

@@ -55,7 +55,7 @@ fun HomePageScreen(navigate: (String) -> Unit) {
                 )
                 // Text at bottom
                 Text(
-                    text = "View",
+                    text = "Search",
                     fontSize = 16.sp,
                     color = Color.White
                 )
