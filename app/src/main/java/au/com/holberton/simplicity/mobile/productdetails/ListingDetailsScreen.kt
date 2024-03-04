@@ -97,6 +97,8 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?, navigate: (Strin
                         onClick = { navigate("home") },
                         modifier = Modifier
                             .padding(8.dp)
+                            .height(64.dp)
+                            .width(150.dp)
                     ) {
                         Text(text = "Home")
                     }
@@ -146,7 +148,7 @@ private fun ListingDetailsView(
             Text(
                 text = "Name: ${listingDetails.name}",
                 style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colors.secondary,
                 modifier = Modifier
                     .weight(1f)
                     .padding(vertical = 10.dp)
@@ -154,7 +156,7 @@ private fun ListingDetailsView(
             Text(
                 text = "UPC Code: $upcString",
                 style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colors.secondary,
                 modifier = Modifier
                     .weight(1f)
                     .padding(vertical = 10.dp)
@@ -170,7 +172,7 @@ private fun ListingDetailsView(
             Text(
                 text = "Price: ${listingDetails.salePrice}",
                 style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colors.secondary,
                 modifier = Modifier.padding(vertical = 10.dp)
             )
         }
@@ -184,7 +186,7 @@ private fun ListingDetailsView(
             Text(
                 text = "Location: ${listingDetails.location}",
                 style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colors.secondary,
                 modifier = Modifier.padding(vertical = 10.dp)
             )
         }
@@ -198,7 +200,7 @@ private fun ListingDetailsView(
             Text(
                 text = "Category: ${listingDetails.category}",
                 style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colors.secondary,
                 modifier = Modifier.padding(vertical = 10.dp)
             )
         }
@@ -212,7 +214,7 @@ private fun ListingDetailsView(
             Text(
                 text = "Quantity: ",
                 style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colors.secondary,
                 modifier = Modifier
                     .padding()
             )
