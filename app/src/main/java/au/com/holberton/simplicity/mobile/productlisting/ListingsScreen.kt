@@ -24,6 +24,7 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.Typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -32,8 +33,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import au.com.holberton.simplicity.mobile.common.CommonComponent
@@ -48,13 +51,15 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
     val isSortedByProductCode = remember { mutableStateOf(false) }
     val listings = remember { mutableStateOf(emptyList<ListingSummary>()) }
     val snackbarHostState = remember { SnackbarHostState() }
+    val typography = Typography(
+        defaultFontFamily = FontFamily.SansSerif // You can set your desired font family here
+    )
 
-    // TODO task 3: Filter and sort listings
     fun getFilteredListings(): List<ListingSummary> {
         val filteredListings = listings.value
             .filter {
-                  it.name.contains(
-                     searchTerm.value,
+                it.name.contains(
+                    searchTerm.value,
                     ignoreCase = true
                 ) || it.upc.toString().contains(
                     searchTerm.value,
@@ -62,7 +67,7 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
                 )
             }
         //If search term empty return empty list
-        return if (searchTerm.value.isEmpty()){
+        return if (searchTerm.value.isEmpty()) {
             emptyList()
         } else {
             if (isSortedByProductCode.value) {
@@ -84,35 +89,43 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
         }
 
     }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Products Search") },
-            navigationIcon = {
-                IconButton(onClick = onBackPressed) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Back"
+    MaterialTheme(
+        typography = typography
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(title = {
+                    Text (
+                        text = "Products Search",
+                        style = MaterialTheme.typography.h6
                     )
+                },
+                    navigationIcon = {
+                        IconButton(onClick = onBackPressed) {
+                            Icon(
+                                Icons.Filled.ArrowBack,
+                                contentDescription = "Back"
+                            )
+                        }
+                    })
+            },
+            snackbarHost = { CommonComponent.TopSnackbarHost(snackbarHostState) }
+        ) { padding ->
+            Column(modifier = Modifier.padding(padding)) {
+                SearchBar(searchTerm = searchTerm.value, onValueChange = { searchTerm.value = it })
+                SortingBar(
+                    isSortedByProductCode = isSortedByProductCode.value,
+                    toggleSorting = { isSortedByProductCode.value = !isSortedByProductCode.value }
+                )
+                if (searchTerm.value.isNotEmpty()) {
+                    Header() // Add header for listed products
                 }
-            })
-        },
-        snackbarHost = { CommonComponent.TopSnackbarHost(snackbarHostState) }
-    ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-            SearchBar(searchTerm = searchTerm.value, onValueChange = { searchTerm.value = it })
-            SortingBar(
-                isSortedByProductCode = isSortedByProductCode.value,
-                toggleSorting = { isSortedByProductCode.value = !isSortedByProductCode.value }
-            )
-            if (searchTerm.value.isNotEmpty()){
-                Header() // Add header for listed products
-            }
 
-            LazyColumn{
+                LazyColumn {
                     items(getFilteredListings()) {
                         ListingCard(it, navigate)
                     }
+                }
             }
         }
     }
@@ -126,11 +139,11 @@ private fun Header() {
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "", modifier = Modifier.weight(1f))
-        Text(text = "Code", modifier = Modifier.weight(1f))
-        Text(text = "Name", modifier = Modifier.weight(1f))
-        Text(text = "Qty", modifier = Modifier.weight(1f))
-        Text(text = "Price", modifier = Modifier.weight(1f))
+        Text(text = "Image", color = Color(0xFF444444), modifier = Modifier.weight(0.5f))
+        Text(text = "UPC", color = Color(0xFF444444), modifier = Modifier.weight(0.4f))
+        Text(text = "Name", color = Color(0xFF444444), modifier = Modifier.weight(0.3f))
+        Text(text = "Qty", color = Color(0xFF444444), modifier = Modifier.weight(0.2f))
+        Text(text = "Price", color = Color(0xFF444444), modifier = Modifier.weight(0.2f))
     }
 }
 

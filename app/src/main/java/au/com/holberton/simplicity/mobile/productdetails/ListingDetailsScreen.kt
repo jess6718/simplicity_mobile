@@ -231,7 +231,7 @@ private fun ListingDetailsView(
                 },
                 modifier = Modifier
                     .focusRequester(focusRequester)
-                    .height(50.dp)
+                    .height(55.dp)
                     .width(150.dp)
                     .padding(start = 8.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -260,7 +260,9 @@ private fun ListingDetailsView(
                     .width(100.dp)
                     .padding(start = 10.dp)
             ) {
-                Text(text = "update")
+                Text(
+                    text = "Update"
+                )
             }
             Text(
                 text = "",
