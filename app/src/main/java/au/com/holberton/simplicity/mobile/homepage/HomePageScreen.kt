@@ -50,8 +50,8 @@ fun HomePageScreen(navigate: (String) -> Unit) {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.inventoryimage),
-                contentDescription = "inventoryimage",
+                painter = painterResource(id = R.drawable.inventoryimage1),
+                contentDescription = "inventoryimage1",
                 modifier = Modifier
                     .size(370.dp)
                     .offset(y = (-50).dp)
@@ -67,7 +67,7 @@ fun HomePageScreen(navigate: (String) -> Unit) {
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = "logo",
                     modifier = Modifier
-                        .size(67.dp)
+                        .size(70.dp)
                 )
                 Text(
                     text = "Simplicity",
@@ -83,7 +83,7 @@ fun HomePageScreen(navigate: (String) -> Unit) {
                         )
                     ),
                     color = Color(0xFF6C99EE),
-                    modifier = Modifier.padding(start = 40.dp)
+                    modifier = Modifier.padding(start = 30.dp)
                 )
             }
             Row(

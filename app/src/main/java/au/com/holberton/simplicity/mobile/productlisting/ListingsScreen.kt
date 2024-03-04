@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -137,10 +139,16 @@ private fun Header() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween // Align items to the start (left)
+
     ) {
-        Text(text = "Image", color = Color(0xFF444444), modifier = Modifier.weight(0.5f))
-        Text(text = "UPC", color = Color(0xFF444444), modifier = Modifier.weight(0.4f))
+        Text(
+            text = "Image",
+            color = Color(0xFF444444),
+            modifier = Modifier.weight(0.3f)
+        )
+        Text(text = "UPC", color = Color(0xFF444444), modifier = Modifier.weight(0.55f))
         Text(text = "Name", color = Color(0xFF444444), modifier = Modifier.weight(0.3f))
         Text(text = "Qty", color = Color(0xFF444444), modifier = Modifier.weight(0.2f))
         Text(text = "Price", color = Color(0xFF444444), modifier = Modifier.weight(0.2f))
@@ -175,44 +183,52 @@ private fun ListingCard(
             .clickable { navigate("listingDetails/${listingSummary.upc}") },
         elevation = 2.dp
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             // Display the image bitmap if available
             bitmapState.value?.let { bitmap ->
-                Image(
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = "Listing image",
-                    modifier = Modifier
-                        .height(65.dp)
-                        .width(65.dp),
-                    contentScale = ContentScale.FillBounds
-                )
+                Box(
+                    modifier = Modifier.weight(0.3f))
+                    {
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "Listing image",
+                        modifier = Modifier
+                            .height(65.dp)
+                            .width(65.dp),
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
             }
-            Column(modifier = Modifier.padding(10.dp)) {
+            Column(modifier = Modifier.weight(0.55f)) {
                 Text(
                     text = upcString,
                     style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.primary,
+                    color = MaterialTheme.colors.secondary,
                 )
             }
-            Column(modifier = Modifier.padding(10.dp)) {
+            Column(modifier = Modifier.weight(0.3f)) {
                 Text(
                     text = listingSummary.name,
                     style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.primary
+                    color = MaterialTheme.colors.secondary
                 )
             }
-            Column(modifier = Modifier.padding(10.dp)) {
+            Column(modifier = Modifier.weight(0.2f)) {
                 Text(
                     text = listingSummary.quantity.toString(),
                     style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.primary
+                    color = MaterialTheme.colors.secondary
                 )
             }
-            Column(modifier = Modifier.padding(10.dp)) {
+            Column(modifier = Modifier.weight(0.2f)) {
                 Text(
                     text = listingSummary.salePrice.toString(),
                     style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.primary
+                    color = MaterialTheme.colors.secondary
                 )
             }
         }
@@ -228,7 +244,7 @@ private fun SearchBar(searchTerm: String, onValueChange: (String) -> Unit) {
         onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
         placeholder = {
-            Text("Search by productCode")
+            Text("Search by UPC or Name")
         }
     )
 }
