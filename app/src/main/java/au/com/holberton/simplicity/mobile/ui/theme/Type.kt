@@ -11,17 +11,18 @@ val Typography = Typography(
     body1 = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
-        fontSize = 18.sp
+        fontSize = 18.sp),
+//    Other default text styles to override, like text on button
+    button = TextStyle(
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.W700,
+        fontSize = 18.sp,
+        //fontStyle = FontStyle.Italic
     )
-//    Other default text styles to override
-//    button = TextStyle(
-//        fontFamily = FontFamily.Default,
-//        fontWeight = FontWeight.W500,
-//        fontSize = 14.sp
-//    ),
+)
+
 //    caption = TextStyle(
 //        fontFamily = FontFamily.Default,
 //        fontWeight = FontWeight.Normal,
 //        fontSize = 12.sp
 //    )
-)
