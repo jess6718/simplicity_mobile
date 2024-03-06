@@ -38,9 +38,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import au.com.holberton.simplicity.mobile.common.CommonComponent
 import au.com.holberton.simplicity.mobile.common.ExceptionHandler
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
@@ -54,7 +57,7 @@ fun ListingsScreen(navigate: (String) -> Unit, onBackPressed: () -> Unit) {
     val listings = remember { mutableStateOf(emptyList<ListingSummary>()) }
     val snackbarHostState = remember { SnackbarHostState() }
     val typography = Typography(
-        defaultFontFamily = FontFamily.SansSerif // You can set your desired font family here
+        defaultFontFamily = FontFamily.SansSerif
     )
 
     fun getFilteredListings(): List<ListingSummary> {
@@ -143,15 +146,36 @@ private fun Header() {
         horizontalArrangement = Arrangement.SpaceBetween // Align items to the start (left)
 
     ) {
-        Text(
-            text = "Image",
-            color = Color(0xFF444444),
-            modifier = Modifier.weight(0.3f)
+        Text(text = "Image",
+            color = Color(0xFF6A0DAD),
+            style = TextStyle(fontWeight = FontWeight.ExtraBold),
+            fontSize = 16.sp,
+            modifier = Modifier.weight(0.24f)
         )
-        Text(text = "UPC", color = Color(0xFF444444), modifier = Modifier.weight(0.55f))
-        Text(text = "Name", color = Color(0xFF444444), modifier = Modifier.weight(0.3f))
-        Text(text = "Qty", color = Color(0xFF444444), modifier = Modifier.weight(0.2f))
-        Text(text = "Price", color = Color(0xFF444444), modifier = Modifier.weight(0.2f))
+        Text(text = "UPC",
+            color = Color(0xFF6A0DAD),
+            style = TextStyle(fontWeight = FontWeight.ExtraBold),
+            fontSize = 16.sp,
+            modifier = Modifier.weight(0.47f)
+        )
+        Text(text = "Name",
+            color = Color(0xFF6A0DAD),
+            style = TextStyle(fontWeight = FontWeight.ExtraBold),
+            fontSize = 16.sp,
+            modifier = Modifier.weight(0.39f)
+        )
+        Text(text = "Qty",
+            color = Color(0xFF6A0DAD),
+            style = TextStyle(fontWeight = FontWeight.ExtraBold),
+            fontSize = 16.sp,
+            modifier = Modifier.weight(0.2f)
+        )
+        Text(text = "Price",
+            color = Color(0xFF6A0DAD),
+            style = TextStyle(fontWeight = FontWeight.ExtraBold),
+            fontSize = 16.sp,
+            modifier = Modifier.weight(0.2f)
+        )
     }
 }
 
@@ -176,67 +200,66 @@ private fun ListingCard(
         }
     }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { navigate("listingDetails/${listingSummary.upc}") },
-        elevation = 2.dp
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .clickable { navigate("listingDetails/${listingSummary.upc}") },
+            elevation = 2.dp
         ) {
-            // Display the image bitmap if available
-            bitmapState.value?.let { bitmap ->
-                Box(
-                    modifier = Modifier.weight(0.3f))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                // Display the image bitmap if available
+                bitmapState.value?.let { bitmap ->
+                    Box(
+                        modifier = Modifier.weight(0.24f)
+                    )
                     {
-                    Image(
-                        bitmap = bitmap.asImageBitmap(),
-                        contentDescription = "Listing image",
-                        modifier = Modifier
-                            .height(65.dp)
-                            .width(65.dp),
-                        contentScale = ContentScale.FillBounds
+                        Image(
+                            bitmap = bitmap.asImageBitmap(),
+                            contentDescription = "Listing image",
+                            modifier = Modifier
+                                .height(65.dp)
+                                .width(65.dp),
+                            contentScale = ContentScale.FillBounds
+                        )
+                    }
+                }
+                Column(modifier = Modifier.weight(0.47f)) {
+                    Text(
+                        text = upcString,
+                        style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
+                        color = MaterialTheme.colors.secondary,
+                    )
+                }
+                Column(modifier = Modifier.weight(0.39f)) {
+                    Text(
+                        text = listingSummary.name,
+                        style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
+                        color = MaterialTheme.colors.secondary
+                    )
+                }
+                Column(modifier = Modifier.weight(0.2f)) {
+                    Text(
+                        text = listingSummary.quantity.toString(),
+                        style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
+                        color = MaterialTheme.colors.secondary
+                    )
+                }
+                Column(modifier = Modifier.weight(0.2f)) {
+                    Text(
+                        text = listingSummary.salePrice.toString(),
+                        style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
+                        color = MaterialTheme.colors.secondary
                     )
                 }
             }
-            Column(modifier = Modifier.weight(0.55f)) {
-                Text(
-                    text = upcString,
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary,
-                )
-            }
-            Column(modifier = Modifier.weight(0.3f)) {
-                Text(
-                    text = listingSummary.name,
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary
-                )
-            }
-            Column(modifier = Modifier.weight(0.2f)) {
-                Text(
-                    text = listingSummary.quantity.toString(),
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary
-                )
-            }
-            Column(modifier = Modifier.weight(0.2f)) {
-                Text(
-                    text = listingSummary.salePrice.toString(),
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary
-                )
-            }
         }
     }
-}
 
-
-// No need to change below
 @Composable
 private fun SearchBar(searchTerm: String, onValueChange: (String) -> Unit) {
     TextField(

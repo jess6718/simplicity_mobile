@@ -15,18 +15,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -37,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import au.com.holberton.simplicity.mobile.R
 import au.com.holberton.simplicity.mobile.ui.theme.WorkshopTheme
-import java.time.format.TextStyle
 
 @Composable
 fun HomePageScreen(navigate: (String) -> Unit) {
@@ -157,13 +153,11 @@ fun HomePageScreen(navigate: (String) -> Unit) {
             }
         }
     }
-
-
-    @Preview(showBackground = true)
-    @Composable
-    fun HomePageScreenPreview() {
-        WorkshopTheme {
-            HomePageScreen { }
-        }
+}
+@Preview(showBackground = true)
+@Composable
+fun HomePageScreenPreview() {
+    WorkshopTheme {
+        HomePageScreen { }
     }
 }

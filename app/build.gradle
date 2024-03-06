@@ -25,7 +25,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:3030/\"" // localhost
+            buildConfigField "String", "BASE_URL", "\"http://localhost:3030/\"" // localhost
         }
         release {
             buildConfigField "String", "BASE_URL", "\"https://virtserver.swaggerhub.com/UCSANTOS/Simplicity/1.0.0/\"" // deployed
