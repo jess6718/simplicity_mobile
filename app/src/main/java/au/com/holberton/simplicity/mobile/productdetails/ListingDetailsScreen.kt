@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -111,7 +112,7 @@ fun ListingDetailsScreen(onBackPressed: () -> Unit, upc: Long?, navigate: (Strin
                         modifier = Modifier
                             .padding(8.dp)
                             .height(64.dp)
-                            .width(150.dp),
+                            .width(130.dp),
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color(0xFFECAC5F)
                         )
@@ -150,6 +151,7 @@ private fun ListingDetailsView(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
+    var showConfirmationDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = listingDetails._id) {
         withContext(Dispatchers.IO) {
@@ -162,236 +164,266 @@ private fun ListingDetailsView(
         }
     }
 
-        bitmapState.value?.let { bitmap ->
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 30.dp)
-            ) {
-                Image(
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = "Listing image",
-                    modifier = Modifier
-                        .height(180.dp)
-                        .width(180.dp),
-                    contentScale = ContentScale.FillBounds
-                )
-            }
-        }
-        Column(
+    bitmapState.value?.let { bitmap ->
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding()
+                .padding(top = 30.dp)
         ) {
-            Row(
+            Image(
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = "Listing image",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp)
-                    .padding(top = 10.dp)
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF6A0DAD),
-                                fontSize = 16.sp
-                            )
-                        ) {
-                            append("Name:")
-                        }
-                        append(" ${listingDetails.name}")
-                    },
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(vertical = 13.dp)
-                )
-            }
-            Row(
+                    .height(180.dp)
+                    .width(180.dp),
+                contentScale = ContentScale.FillBounds
+            )
+        }
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+                .padding(top = 10.dp)
+        ) {
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF6A0DAD),
+                            fontSize = 16.sp
+                        )
+                    ) {
+                        append("Name:")
+                    }
+                    append(" ${listingDetails.name}")
+                },
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.secondary,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp)
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF6A0DAD),
-                                fontSize = 16.sp
-                            )
-                        ) {
-                            append("UPC:")
-                        }
-                        append(" $upcString")
-                    },
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(vertical = 13.dp)
-                )
-            }
+                    .weight(1f)
+                    .padding(vertical = 13.dp)
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+        ) {
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF6A0DAD),
+                            fontSize = 16.sp
+                        )
+                    ) {
+                        append("UPC:")
+                    }
+                    append(" $upcString")
+                },
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.secondary,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = 13.dp)
+            )
+        }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp)
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF6A0DAD),
-                                fontSize = 16.sp
-                            )
-                        ) {
-                            append("Price:")
-                        }
-                        append(" ${listingDetails.salePrice}")
-                    },
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary,
-                    modifier = Modifier.padding(vertical = 13.dp)
-                )
-            }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+        ) {
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF6A0DAD),
+                            fontSize = 16.sp
+                        )
+                    ) {
+                        append("Price:")
+                    }
+                    append(" ${listingDetails.salePrice}")
+                },
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.secondary,
+                modifier = Modifier.padding(vertical = 13.dp)
+            )
+        }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp)
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF6A0DAD),
-                                fontSize = 16.sp
-                            )
-                        ) {
-                            append("Location:")
-                        }
-                        append(" ${listingDetails.location}")
-                    },
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary,
-                    modifier = Modifier.padding(vertical = 13.dp)
-                )
-            }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+        ) {
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF6A0DAD),
+                            fontSize = 16.sp
+                        )
+                    ) {
+                        append("Location:")
+                    }
+                    append(" ${listingDetails.location}")
+                },
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.secondary,
+                modifier = Modifier.padding(vertical = 13.dp)
+            )
+        }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp)
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF6A0DAD),
-                                fontSize = 16.sp
-                            )
-                        ) {
-                            append("Category:")
-                        }
-                        append(" ${listingDetails.category}")
-                    },
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary,
-                    modifier = Modifier.padding(vertical = 13.dp)
-                )
-            }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+        ) {
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF6A0DAD),
+                            fontSize = 16.sp
+                        )
+                    ) {
+                        append("Category:")
+                    }
+                    append(" ${listingDetails.category}")
+                },
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.secondary,
+                modifier = Modifier.padding(vertical = 13.dp)
+            )
+        }
 
-            Row(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF6A0DAD)
+                        )
+                    ) {
+                        append("Quantity:")
+                    }
+                },
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.secondary,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .padding()
+            )
+            OutlinedTextField(
+                value = if (quantity.value == null) "" else quantity.value.toString(),
+                onValueChange = { qtyText ->
+                    // Attempt to convert the entered text to an Int
+                    if (qtyText.isEmpty()) {
+                        quantity.value = null
+                    } else {
+                        // Allow input of 0 if the conversion succeeds
+                        if (qtyText.toIntOrNull() != null) {
+                            quantity.value = qtyText.toIntOrNull()
+                        }
+                    }
+                },
+                modifier = Modifier // text box
+                    .focusRequester(focusRequester)
+                    .height(53.dp)
+                    .width(135.dp)
                     .padding(start = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
+                textStyle = MaterialTheme.typography.body1
+            )
+            Button(
+                onClick = {
+                    showConfirmationDialog.value = true
+                },
+                modifier = Modifier // update button
+                    .height(42.dp)
+                    .width(110.dp)
+                    .padding(start = 11.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFECAC5F))
             ) {
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF6A0DAD)
-                            )
-                        ) {
-                            append("Quantity:")
-                        }
-                    },
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondary,
-                    modifier = Modifier
-                        .padding()
+                    text = "Update",
+                    style = MaterialTheme.typography.button,
+                    color = Color.White
                 )
-                OutlinedTextField(
-                    value = if (quantity.value == null) "" else quantity.value.toString(),
-                    onValueChange = { qtyText ->
-                        // Attempt to convert the entered text to an Int
-                        if (qtyText.isEmpty()) {
-                            quantity.value = null
-                        } else {
-                            // Allow input of 0 if the conversion succeeds
-                            if (qtyText.toIntOrNull() != null) {
-                                quantity.value = qtyText.toIntOrNull()
+            }
+
+            // Confirmation dialog
+            if (showConfirmationDialog.value) {
+                AlertDialog(
+                    onDismissRequest = { showConfirmationDialog.value = false },
+                    title = { Text(text = "Confirm Quantity Update") },
+                    text = { Text(text = "Are you sure you want to update the quantity to ${quantity.value}?") },
+                    confirmButton = {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Button(
+                                onClick = {
+                                    // Call the API to update item quantity
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        ListingDetailsRepository.updateItemQty(
+                                            listingDetails.upc,
+                                            quantity.value
+                                        )
+
+                                        keyboardController?.hide()
+
+                                        focusManager.clearFocus()
+
+                                        snackbarHostState.showSnackbar(
+                                            message = "Update successful",
+                                            duration = SnackbarDuration.Short
+                                        )
+                                    }
+                                    showConfirmationDialog.value = false
+                                },
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+
+                                Text(text = "Yes")
+                            }
+                            Button(
+                                onClick = {
+                                    showConfirmationDialog.value = false
+                                },
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+                                Text(text = "No")
                             }
                         }
-                    },
-                    modifier = Modifier // text box
-                        .focusRequester(focusRequester)
-                        .height(53.dp)
-                        .width(135.dp)
-                        .padding(start = 10.dp),
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    textStyle = MaterialTheme.typography.body1
-                )
-                Button(
-                    onClick = {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            // Call the API to update item quantity
-                            ListingDetailsRepository.updateItemQty(
-                                listingDetails.upc,
-                                quantity.value
-                            )
-
-                            keyboardController?.hide()
-
-                            focusManager.clearFocus()
-
-                            // Show the success message
-                            snackbarHostState.showSnackbar(
-                                message = "Update successful",
-                                duration = SnackbarDuration.Short
-                            )
-                        }
-                    },
-                    modifier = Modifier // update button
-                        .height(42.dp)
-                        .width(110.dp)
-                        .padding(start = 11.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFECAC5F))
-                ) {
-                    Text(
-                        text = "Update",
-                        style = MaterialTheme.typography.button,
-                        color = Color.White
-                    )
-                }
-                Text(
-                    text = "",
-                    modifier = Modifier.focusRequester(focusRequester)
+                    }
                 )
             }
         }
     }
+}
+
 
 @Preview(showBackground = true)
 @Composable
