@@ -9,7 +9,7 @@ fun Barcode.toScan(): Scan {
     return Scan(
         displayValue = displayValue ?: "",
         scanFormatId = when(format) {
-            Barcode.FORMAT_QR_CODE -> R.string.scan_format_qr_code
+            //Barcode.FORMAT_QR_CODE -> R.string.scan_format_qr_code
             Barcode.FORMAT_AZTEC -> R.string.scan_format_aztec
             Barcode.FORMAT_DATA_MATRIX -> R.string.scan_format_data_matrix
             Barcode.FORMAT_PDF417 -> R.string.scan_format_pdf
