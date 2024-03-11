@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ScannerPage(
-    navigate: (String) -> Unit,
+    navigate: (String) -> Unit, // navigate from landing page "Scan"
     viewModel: ScannerViewModel = hiltViewModel()
 ) {
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
