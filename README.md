@@ -36,12 +36,13 @@ You need to set up port forwarding using ADB (Android Debug Bridge) to connect A
 ## Procedure of Changing IP via Gradle File:
 
 1. **To update deployed IP in build.gradle file:** Locate build.gradle file: app/src/build.gradle, replace https://virtserver.swaggerhub.com/UCSANTOS/Simplicity/1.0.0/ with deployed IP(per below screenshot)
-![Local Image](images/build_gradle.png)
+    ![Local Image](images/build_gradle.png)
 
-2. **Select Build Variant:** Locate it in the left toolbar.
+2. **Select Build Variant:** Locate it in the left toolbar ![Local Image](images/build_variants.png).
 
-3. **Choose Variant:** Switch to either "release" mode or "debug" mode, whichever is applicable.
+3. **Choose Variant:** Switch to either "release" mode (deployed API) or "debug" mode (localhost), whichever is applicable.
+   ![Local Image](images/gradle_switch.png)
 
-4. **Sync Project with Gradle Files:** Locate the "elephant-like" icon on the toolbar at the top right and click on it.
+4. **Sync Project with Gradle Files:** Locate the "elephant-like" icon ![Local Image](images/sync.png) on the toolbar at the top right and click on it.
 
-5. **Run App:** Click on the "Run" button in the toolbar at the top right.
+5. **Run App:** Click on the "Run" button ![Local Image](images/run.png) in the toolbar at the top right.

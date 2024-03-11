@@ -90,6 +90,36 @@ fun HomePageScreen(navigate: (String) -> Unit) {
             ) {
                 Box(
                     modifier = Modifier
+                        .clickable { navigate("scanner") }
+                        .size(width = 145.dp, height = 170.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(0xFF806CEE)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(25.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Spacer(modifier = Modifier.weight(1f))
+                        Image(
+                            painter = painterResource(id = R.drawable.barcode),
+                            contentDescription = "barcode",
+                            modifier = Modifier
+                                .size(80.dp)
+                        )
+                        Text(
+                            text = "Scan",
+                            fontSize = 20.sp,
+                            color = Color.White,
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Italic,
+                        )
+                        Spacer(modifier = Modifier.weight(0.1f))
+                    }
+                }
+                Box(
+                    modifier = Modifier
                         .clickable { navigate("listings") }
                         .size(width = 145.dp, height = 170.dp)
                         .clip(RoundedCornerShape(20.dp))
@@ -111,36 +141,6 @@ fun HomePageScreen(navigate: (String) -> Unit) {
                         Spacer(modifier = Modifier.weight(1f))
                         Text(
                             text = "Search",
-                            fontSize = 20.sp,
-                            color = Color.White,
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.Bold,
-                            fontStyle = FontStyle.Italic,
-                        )
-                        Spacer(modifier = Modifier.weight(0.1f))
-                    }
-                }
-                Box(
-                    modifier = Modifier
-                        .clickable { navigate("scanner") }
-                        .size(width = 145.dp, height = 170.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color(0xFF806CEE)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(25.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Spacer(modifier = Modifier.weight(1f))
-                        Image(
-                            painter = painterResource(id = R.drawable.barcode),
-                            contentDescription = "barcode",
-                            modifier = Modifier
-                                .size(80.dp)
-                        )
-                        Text(
-                            text = "Scan",
                             fontSize = 20.sp,
                             color = Color.White,
                             fontFamily = FontFamily.SansSerif,
