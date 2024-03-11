@@ -20,9 +20,3 @@ val Typography = Typography(
         //fontStyle = FontStyle.Italic
     )
 )
-
-//    caption = TextStyle(
-//        fontFamily = FontFamily.Default,
-//        fontWeight = FontWeight.Normal,
-//        fontSize = 12.sp
-//    )
