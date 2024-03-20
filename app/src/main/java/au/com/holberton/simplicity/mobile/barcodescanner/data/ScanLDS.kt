@@ -1,6 +1,7 @@
 package au.com.holberton.simplicity.mobile.barcodescanner.data
 
 import android.content.Context
+import android.media.MediaPlayer
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -58,6 +59,12 @@ class ScanLDS @Inject constructor(
     }
     private val scanStateFlow = MutableStateFlow<Scan?>(null)
 
+    private var mediaPlayer: MediaPlayer? = null
+
+    init {
+        // Initialize MediaPlayer
+        mediaPlayer = MediaPlayer.create(context, R.raw.beep)
+    }
 
     override fun analyze(proxy: ImageProxy) {
         proxy.image?.let {
@@ -73,6 +80,7 @@ class ScanLDS @Inject constructor(
                             .distinct()
                             .first()
                             .toScan()
+                        mediaPlayer?.start()
                     } else {
                         scanStateFlow.value = Scan(
                             displayValue = "",
